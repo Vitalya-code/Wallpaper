@@ -1,7 +1,0 @@
-PySide6
-requests
-httplib2
-beautifulsoup4
-Pillow
-screeninfo
-lxml
