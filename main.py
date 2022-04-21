@@ -8,6 +8,7 @@ import os
 import ctypes
 
 try:
+    imgList = []
     temp = os.getenv("temp")
     #print(temp)
     os.mkdir(temp + "\Wallpapers")
@@ -50,13 +51,23 @@ class MainWindow(QMainWindow):
 
 
 class Buttons():
+
     def nextImage(self):
         url, name = Parsing.getImageUrl(self)
         Parsing.imageDownload(self, url, name)
         SysFuncs.set_wallpaper(self, temp+name)
+        imgList.append(name)
+        print(imgList)
+
 
     def prevImage(self):
-        print("prevImage")
+        imgList.pop()
+        last_element = imgList[-1]
+        SysFuncs.set_wallpaper(self, temp + last_element)
+        print(imgList)
+
+
+
 
     #def settings(self):
         #print("settings")
