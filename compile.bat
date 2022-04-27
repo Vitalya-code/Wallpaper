@@ -1,1 +1,1 @@
-nuitka main.py --onefile --standalone --windows-icon-from-ico=ico.ico --enable-plugin=pyqt6 --windows-disable-console
+nuitka main.py --onefile --standalone --windows-icon-from-ico=ico.ico --enable-plugin=pyqt6 --windows-disable-console -o Wallpaper.exe

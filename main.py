@@ -7,7 +7,7 @@ import os
 import sys
 
 import ctypes
-from ctypes import wintypes as w
+
 
 
 
@@ -28,10 +28,7 @@ class MainWindow(QMainWindow):
 
 
     def initUI(self):
-        #add current wallpaper to imgList
-        image = SysFuncs.get_wallpaper(self)
-        imgList.append(image)
-        print(imgList)
+
 
         # TrayIcon
         self.tray = QSystemTrayIcon(self)
@@ -70,13 +67,13 @@ class Buttons():
 
         print(imgList)
 
-
-
     def prevImage(self):
-        imgList.pop()
-        #last_element = imgList[-1]
-        SysFuncs.set_wallpaper(self, temp + imgList[-1])
-        #print(imgList)
+        print(imgList)
+        if len(imgList) > 1:
+            imgList.pop()
+            # last_element = imgList[-1]
+            SysFuncs.set_wallpaper(self, temp + imgList[0])
+            # print(imgList)
 
 
     #def settings(self):
@@ -120,20 +117,7 @@ class SysFuncs():
     def set_wallpaper(self, path):
         ctypes.windll.user32.SystemParametersInfoW(20, 0, path+".jpg", 0)
 
-    def get_wallpaper(self):
-        SPI_GETDESKWALLPAPER = 0x0073
 
-        dll = ctypes.WinDLL('user32')
-        dll.SystemParametersInfoW.argtypes = w.UINT, w.UINT, w.LPVOID, w.UINT
-        dll.SystemParametersInfoW.restype = w.BOOL
-
-        path = ctypes.create_unicode_buffer(260)
-        result = dll.SystemParametersInfoW(SPI_GETDESKWALLPAPER, ctypes.sizeof(path), path, 0)
-        print(path.value)
-        if result == True:
-            return path.value
-        else:
-            return "Error"
 
 
 
