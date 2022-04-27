@@ -1,5 +1,6 @@
 PySide6
 requests
 beautifulsoup4
-screeninfo
 lxml
+screeninfo
+

@@ -1,11 +1,15 @@
-from PySide6.QtGui import QIcon, QAction
-from PySide6.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu
-import sys
 import requests
+from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu, QApplication
+from PyQt6.QtGui import QIcon, QAction
 from bs4 import BeautifulSoup
 from screeninfo import get_monitors
 import os
+import sys
+
 import ctypes
+from ctypes import wintypes as w
+
+
 
 try:
     imgList = []
@@ -22,7 +26,13 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.initUI()
 
+
     def initUI(self):
+        #add current wallpaper to imgList
+        image = SysFuncs.get_wallpaper(self)
+        imgList.append(image)
+        print(imgList)
+
         # TrayIcon
         self.tray = QSystemTrayIcon(self)
         self.tray.setIcon(QIcon("ico.ico"))
@@ -47,26 +57,26 @@ class MainWindow(QMainWindow):
         self.menu.addAction(self.quit)
         self.tray.setContextMenu(self.menu)
 
+
         app.exec()
 
 
 class Buttons():
-
     def nextImage(self):
         url, name = Parsing.getImageUrl(self)
         Parsing.imageDownload(self, url, name)
         SysFuncs.set_wallpaper(self, temp+name)
         imgList.append(name)
+
         print(imgList)
+
 
 
     def prevImage(self):
         imgList.pop()
-        last_element = imgList[-1]
-        SysFuncs.set_wallpaper(self, temp + last_element)
-        print(imgList)
-
-
+        #last_element = imgList[-1]
+        SysFuncs.set_wallpaper(self, temp + imgList[-1])
+        #print(imgList)
 
 
     #def settings(self):
@@ -86,7 +96,7 @@ class Parsing():
 
     def getImageUrl(self):
         #url = 'https://wallhaven.cc/search?sorting=random&ref=fp'
-        url = "https://wallhaven.cc/search?sorting=random&ref=fp"
+        url = "https://wallhaven.cc/search?q=id:37&sorting=random&ref=fp"
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'lxml')
         quotes = soup.find_all('a', class_="preview")
@@ -102,14 +112,6 @@ class Parsing():
 
 
 
-    def checkNet(self):
-        try:
-            response = requests.get("http://www.google.com")
-            return True
-        except requests.ConnectionError:
-            return False
-
-
 class SysFuncs():
     def get_resolution(self):
         for m in get_monitors():
@@ -118,7 +120,32 @@ class SysFuncs():
     def set_wallpaper(self, path):
         ctypes.windll.user32.SystemParametersInfoW(20, 0, path+".jpg", 0)
 
+    def get_wallpaper(self):
+        SPI_GETDESKWALLPAPER = 0x0073
+
+        dll = ctypes.WinDLL('user32')
+        dll.SystemParametersInfoW.argtypes = w.UINT, w.UINT, w.LPVOID, w.UINT
+        dll.SystemParametersInfoW.restype = w.BOOL
+
+        path = ctypes.create_unicode_buffer(260)
+        result = dll.SystemParametersInfoW(SPI_GETDESKWALLPAPER, ctypes.sizeof(path), path, 0)
+        print(path.value)
+        if result == True:
+            return path.value
+        else:
+            return "Error"
+
+
+
+    def checkNet(self):
+        try:
+            response = requests.get("http://www.google.com")
+            return True
+        except requests.ConnectionError:
+            return False
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setQuitOnLastWindowClosed(False)
     window = MainWindow()
