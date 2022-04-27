@@ -1,4 +1,4 @@
-PySide6
+PyQt6
 requests
 beautifulsoup4
 lxml
