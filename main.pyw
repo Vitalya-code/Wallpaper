@@ -10,16 +10,14 @@ import ctypes
 
 
 
-
-try:
-    imgList = []
-    temp = os.getenv("temp")
-    #print(temp)
+imgList = []
+temp = os.getenv("temp")
+if os.path.exists(temp) == False:
     os.mkdir(temp + "\Wallpapers")
-    temp = temp+r"\Wallpapers\ "
+temp = temp+r"\Wallpapers\ "
 
-except:
-    pass
+
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -28,7 +26,6 @@ class MainWindow(QMainWindow):
 
 
     def initUI(self):
-
 
         # TrayIcon
         self.tray = QSystemTrayIcon(self)
@@ -43,6 +40,7 @@ class MainWindow(QMainWindow):
         self.settings = QAction("Settings")
         self.quit = QAction("Quit")
 
+
         self.nextImage.triggered.connect(Buttons.nextImage)
         self.prevImage.triggered.connect(Buttons.prevImage)
         #self.settings.triggered.connect(Buttons.settings)
@@ -55,7 +53,9 @@ class MainWindow(QMainWindow):
         self.tray.setContextMenu(self.menu)
 
 
-        app.exec()
+
+
+
 
 
 class Buttons():
@@ -133,3 +133,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
     window = MainWindow()
+    #window.show()
+    app.exec()
