@@ -3,4 +3,5 @@ requests
 beautifulsoup4
 lxml
 screeninfo
+pywin32
 
