@@ -1,7 +1,0 @@
-PyQt6
-requests
-beautifulsoup4
-lxml
-screeninfo
-pywin32
-
