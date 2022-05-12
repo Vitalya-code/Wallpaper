@@ -4,7 +4,7 @@ from auto_py_to_exe import __version__ as version
 
 setup(
     name='Wallpaper-gui',
-    version='0.3',
+    version='0.1',
     url='https://github.com/Vitalya-code/Wallpaper',
     license='MIT',
     author='Vitalya',
