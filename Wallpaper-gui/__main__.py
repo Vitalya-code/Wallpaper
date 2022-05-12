@@ -34,7 +34,7 @@ class MainWindow(QMainWindow):
 
         # TrayIcon
         self.tray = QSystemTrayIcon(self)
-        self.tray.setIcon(QIcon("ico.ico"))
+        self.tray.setIcon(QIcon("__ico__.ico"))
         self.tray.setVisible(True)
 
         # trayMenu
