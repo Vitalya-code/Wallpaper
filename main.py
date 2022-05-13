@@ -12,10 +12,10 @@ import ctypes
 
 
 imgList = []
-temp = os.getenv("temp")
-temp = temp + "\\Wallpapers\\"
-if not os.path.exists(temp):
-    os.mkdir(temp)
+imgFolder = os.getenv("temp")
+imgFolder = imgFolder + "\\Wallpapers\\"
+if not os.path.exists(imgFolder):
+    os.mkdir(imgFolder)
 
 
 class MainWindow(QMainWindow):
@@ -61,15 +61,15 @@ class Buttons:
     def next_image(self):
         url, name = Parsing.get_image_url(self)
         Parsing.image_download(self, url, name)
-        SysFuncs.set_wallpaper(self, temp + name + ".jpg")
+        SysFuncs.set_wallpaper(self, imgFolder + name + ".jpg")
         imgList.append(name)
         print(imgList)
 
     def prev_image(self):
         if len(imgList) > 1:
-            print(temp + imgList[-1])
+            print(imgFolder + imgList[-1])
             imgList.pop()
-            SysFuncs.set_wallpaper(self, temp + imgList[-1] + ".jpg")
+            SysFuncs.set_wallpaper(self, imgFolder + imgList[-1] + ".jpg")
 
     # def settings(self):
     # pass
@@ -78,7 +78,7 @@ class Buttons:
 class Parsing:
     def image_download(self, url, name):
         response = requests.get(url)
-        file = open(temp + os.path.basename(name) + ".jpg", "wb")
+        file = open(imgFolder + os.path.basename(name) + ".jpg", "wb")
         file.write(response.content)
         file.close()
 
